@@ -6,13 +6,29 @@
   * https://github.com/andreacardybailey/responsive_example/blob/master/styles/responsive-base.css 
   *
 */
+* {
+  background-color: #161212;
+}
 
 .page {
-  border: 2px solid black;
+  border: 2px solid whitesmoke;
   margin-bottom: 100px;
   text-align: center;
+  color: whitesmoke;
+  font-size: 22px;
+  padding: 100px;
 }
 
 h1 {
+  font-size: 46px;
+  font-family: papyrus;
+  font-weight: 400;
+  color: #e2a50e;
   text-align: center;
 }
+
+button {
+  background-color: #e2a50e;
+  margin-top: 50px;
+}
+

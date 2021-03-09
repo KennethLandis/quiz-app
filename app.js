@@ -82,8 +82,9 @@ function render() {
   } else if (STORE.questionNumber < 5) {
     generateQuestionElement(STORE.questionNumber)
     const questionPageString = generateQuestionElement(STORE.questionNumber);
-
+    
     $('.js-main').html(questionPageString);
+    $('#js-submit').hide();
   } else {
     generateFinalPage();
   }
@@ -98,7 +99,7 @@ function generateStartPage() {
           Identify as many creatures by their descriptions as you can!
         </p>
       <div id="start-button">
-        <button id="start">Begin Quiz</button>
+        <button id="js-start">Begin Quiz</button>
       </div>
     </div>
   </section>`)
@@ -113,17 +114,17 @@ function generateQuestionElement(currentQuestion) {
   let tempPageNum = STORE.questionNumber + 1;
   return `<section id="question set">
   <div class="page">
-  <form>
+  <form id="js-form" name="form">
     <h2>${tempQuestion.question}</h2>
-      <input id = 'a' name="answer" type="radio" value="${tempQuestion.answers[0]}">
+      <input id = 'a' name="answer" type="radio" onclick="handleRadioClicked()" value="${tempQuestion.answers[0]}" required>
         <label for="${tempQuestion.answers[0]}">${tempQuestion.answers[0]}</label><br>
-      <input id = 'b' name="answer" type="radio" value="${tempQuestion.answers[1]}">
+      <input id = 'b' name="answer" type="radio" onclick="handleRadioClicked()" value="${tempQuestion.answers[1]}" >
         <label for="${tempQuestion.answers[1]}">${tempQuestion.answers[1]}</label><br>
-      <input id = 'c' name="answer" type="radio" value="${tempQuestion.answers[2]}">
+      <input id = 'c' name="answer" type="radio" onclick="handleRadioClicked()" value="${tempQuestion.answers[2]}" >
         <label for="${tempQuestion.answers[2]}">${tempQuestion.answers[2]}</label><br>
-      <input id = 'd' name="answer" type="radio" value="${tempQuestion.answers[3]}">
+      <input id = 'd' name="answer" type="radio" onclick="handleRadioClicked()" value="${tempQuestion.answers[3]}" >
         <label for="${tempQuestion.answers[3]}">${tempQuestion.answers[3]}</label><br>
-      <button id ="submit" type="submit">Submit</button>
+      <button type="submit" id="js-submit" hide>Submit</button>
   </form>
   <h3></h3>
   <p>Question ${tempPageNum} of 5 <br>
@@ -143,9 +144,14 @@ function generateFinalPage() {
 </section>`)
 }
 
+//This function will enable the submit button once a radio button has been checked
+function handleRadioClicked() {
+  console.log('This is working');
+  $('#js-submit').show();
+}
 //This function will start the quiz
 function handleStartClicked() {
-  $('main').on('click', '#start', e => {
+  $('main').on('click', '#js-start', e => {
     STORE.quizStarted = true;
     render();
   }) 
@@ -153,7 +159,7 @@ function handleStartClicked() {
 
 //This function will submit answer to question and provide feedback on if the question was correct
 function handleSubmitClicked() {
-  $('main').on('click', '#submit', e => {
+  $('main').on('click', '#js-submit', e => {
     e.preventDefault();
     var tempQuestionNum = STORE.questionNumber;
     const userChoice = $('input[name="answer"]:checked').val();
@@ -166,7 +172,7 @@ function handleSubmitClicked() {
           You got it! The correct answer was ${userChoice}!!
           </p>
         <div id="next-button">
-          <button id="next">Next</button>
+          <button id="js-next">Next</button>
         </div>
       </div>
     </section>`)
