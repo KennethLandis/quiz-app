@@ -57,6 +57,7 @@ const STORE = {
   score: 0
 };
 
+//useful constant variables//
 
 
 /**
@@ -78,11 +79,13 @@ const STORE = {
 function render() {
   if (STORE.quizStarted === false) {
     generateStartPage();
-  } else {
+  } else if {
     generateQuestionElement(STORE.questionNumber)
     const questionPageString = generateQuestionElement(STORE.questionNumber);
 
     $('.js-main').html(questionPageString);
+  } else {
+    generateFinalPage();
   }
 }
 
@@ -102,29 +105,29 @@ function generateStartPage() {
   //console.log('generateStartPage ran')
 }
 
-// This function will generate a string to render the questions page based on current question
+
 
 // This function will be reponsible for generating a current question/answers element for the dom
 function generateQuestionElement(currentQuestion) {
   let tempQuestion = STORE.questions[currentQuestion];
+  let tempPageNum = STORE.questionNumber + 1;
   return `<section id="question set">
   <div class="page">
   <form>
     <h2>${tempQuestion.question}</h2>
-      <input name="answer" type="radio" value="${tempQuestion.answers[0]}">
+      <input id = 'a' name="answer" type="radio" value="${tempQuestion.answers[0]}">
         <label for="${tempQuestion.answers[0]}">${tempQuestion.answers[0]}</label><br>
-      <input name="answer" type="radio" value="${tempQuestion.answers[1]}">
+      <input id = 'b' name="answer" type="radio" value="${tempQuestion.answers[1]}">
         <label for="${tempQuestion.answers[1]}">${tempQuestion.answers[1]}</label><br>
-      <input name="answer" type="radio" value="${tempQuestion.answers[2]}">
+      <input id = 'c' name="answer" type="radio" value="${tempQuestion.answers[2]}">
         <label for="${tempQuestion.answers[2]}">${tempQuestion.answers[2]}</label><br>
-      <input name="answer" type="radio" value="${tempQuestion.answers[3]}">
+      <input id = 'd' name="answer" type="radio" value="${tempQuestion.answers[3]}">
         <label for="${tempQuestion.answers[3]}">${tempQuestion.answers[3]}</label><br>
-      <button type="submit">Submit</button>
-      <button id="next">Next</button>
+      <button id ="submit" type="submit">Submit</button>
   </form>
   <h3></h3>
-  <p>Question 1 of 5 <br>
-  Score: X</p>
+  <p>Question ${tempPageNum} of 5 <br>
+  Score: ${STORE.score}</p>
   </div>
   </section>`;
 }
@@ -142,11 +145,48 @@ function handleStartClicked() {
 
 //This function will submit answer to question and provide feedback on if the question was correct
 function handleSubmitClicked() {
+  $('main').on('click', '#submit', e => {
+    e.preventDefault();
+    var tempQuestionNum = STORE.questionNumber;
+    const userChoice = $('input[name="answer"]:checked').val();
+    var tempQuestion = STORE.questions[tempQuestionNum];
+    if (userChoice === tempQuestion.correctAnswer) {
+      $('main').html(`<section id="next">
+      <div class="page">
+        <h3>Score Increase!</h3>
+          <p>
+          You got it! The correct answer was ${userChoice}!!
+          </p>
+        <div id="next-button">
+          <button id="next">Next</button>
+        </div>
+      </div>
+    </section>`)
+    STORE.score += 1;
+    STORE.questionNumber += 1;
+    } else {
+      $('main').html(`<section id="next">
+      <div class="page">
+        <h3>I'm Sorry.</h3>
+          <p>
+          Not Quite! The correct answer was ${tempQuestion.correctAnswer}!!
+          </p>
+        <div id="next-button">
+          <button id="next">Next</button>
+        </div>
+      </div>
+    </section>`);
+    STORE.questionNumber += 1;
+    }
+  })
   console.log('handleSubmitClicked ran')
 }
 
 //This function will advance through questions and lead to the final page when all questions are complete
 function handleNextClicked() {
+  $('main').on('click', '#next', e => {
+    render();
+  })
   console.log('handleNextClicked ran')
 }
 
