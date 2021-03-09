@@ -180,7 +180,7 @@ function handleSubmitClicked() {
           Not Quite! The correct answer was ${tempQuestion.correctAnswer}!!
           </p>
         <div id="next-button">
-          <button id="next">Next</button>
+          <button id="js-next">Next</button>
         </div>
       </div>
     </section>`);
@@ -192,7 +192,7 @@ function handleSubmitClicked() {
 
 //This function will advance through questions and lead to the final page when all questions are complete
 function handleNextClicked() {
-  $('main').on('click', '#next', e => {
+  $('main').on('click', '#js-next', e => {
     render();
   })
   console.log('handleNextClicked ran')
