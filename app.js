@@ -79,7 +79,7 @@ const STORE = {
 function render() {
   if (STORE.quizStarted === false) {
     generateStartPage();
-  } else if {
+  } else if (STORE.questionNumber < 5) {
     generateQuestionElement(STORE.questionNumber)
     const questionPageString = generateQuestionElement(STORE.questionNumber);
 
@@ -133,7 +133,15 @@ function generateQuestionElement(currentQuestion) {
 }
 
 // This function will be responsible for generating final page for the dom
-
+function generateFinalPage() {
+  $('main').html(`
+  <section id="End Page">
+    <div class="page">
+      <h2>Final Score: ${STORE.score} out of 5!</h2>
+    <button id="js-reset">Try Again?</button>
+  </div>
+</section>`)
+}
 
 //This function will start the quiz
 function handleStartClicked() {
@@ -192,6 +200,12 @@ function handleNextClicked() {
 
 //This function will restart the quiz from the final page
 function handleRestartClicked() {
+  $('main').on('click', '#js-reset', e => {
+    STORE.questionNumber = 0;
+    STORE.score = 0;
+    STORE.quizStarted = false;
+    render();
+  })
   console.log('handleRestartClicked ran')
 }
 
